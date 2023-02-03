@@ -29,22 +29,20 @@ const subNavigation = [
   { name: "Integrations", href: "#", icon: SquaresPlusIcon, current: false },
 ];
 
-function classNames(...classes) {
+function classNames(...classes: any) {
   return classes.filter(Boolean).join(" ");
 }
 
 import { Database } from "../utils/database.types";
-type Profiles = Database["public"]["Tables"]["profiles"]["Row"];
-
-export default function Profile({ session }) {
+export default function Profile({ session }: any) {
   const supabase = useSupabaseClient<Database>();
   const user = useUser();
   const [availableToHire, setAvailableToHire] = useState(false);
   const [privateAccount, setPrivateAccount] = useState(false);
   const [allowCommenting, setAllowCommenting] = useState(false);
   const [allowMentions, setAllowMentions] = useState(false);
-  const [avatar_url, setAvatarUrl] = useState<Profiles["avatar_url"]>(null);
-  const [avatarPath, setAvatarPath] = useState<Profiles["avatar_url"]>(null);
+  const [avatar_url, setAvatarUrl] = useState<any>("");
+  const [avatarPath, setAvatarPath] = useState<any>("");
   const [loading, setLoading] = useState(true);
 
   const userNavigation = [
@@ -104,18 +102,18 @@ export default function Profile({ session }) {
         throw error;
       }
       setUserState({
-        company: data.company,
-        description: data.desciption,
-        firstName: data.full_name,
-        lastName: data.last_name,
-        website: data.website,
-        username: data.username,
+        company: data?.company ?? "",
+        description: data?.desciption ?? "",
+        firstName: data?.full_name ?? "",
+        lastName: data?.last_name ?? "",
+        website: data?.website ?? "",
+        username: data?.username ?? "",
       });
-      setAvailableToHire(data.is_available_to_hire);
-      setPrivateAccount(data.is_private_account);
-      setAllowCommenting(data.allow_commenting);
-      setAllowMentions(data.allow_mentions);
-      setAvatarUrl(data.avatar_url);
+      setAvailableToHire(!!data?.is_available_to_hire);
+      setPrivateAccount(!!data?.is_private_account);
+      setAllowCommenting(!!data?.allow_commenting);
+      setAllowMentions(!!data?.allow_mentions);
+      setAvatarUrl(data?.avatar_url || "");
     } catch (error) {
       alert("Error loading user data!");
       console.log(error);
@@ -124,7 +122,7 @@ export default function Profile({ session }) {
     }
   }
 
-  async function updateProfile(e) {
+  async function updateProfile(e: any) {
     e.preventDefault();
     try {
       setLoading(true);
@@ -281,7 +279,7 @@ export default function Profile({ session }) {
                                       "block py-2 px-4 text-sm text-gray-700"
                                     )}
                                     onClick={() => {
-                                      item?.onClick();
+                                      item?.onClick?.();
                                     }}
                                   >
                                     {item.name}
@@ -513,11 +511,10 @@ export default function Profile({ session }) {
                       </div>
                     </div>
                     <Avatar
-                      user={user}
                       uid={user!.id}
                       url={avatar_url}
                       size={150}
-                      onUpload={(url) => {
+                      onUpload={(url: string) => {
                         setAvatarUrl(url);
                       }}
                     />

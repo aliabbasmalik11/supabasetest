@@ -11,10 +11,10 @@ export default function Avatar({
   uid: string;
   url: Profiles["avatar_url"];
   size: number;
-  onUpload: (url: string) => void;
+  onUpload: any;
 }) {
   const supabase = useSupabaseClient<Database>();
-  const [avatarUrl, setAvatarUrl] = useState<Profiles["avatar_url"]>(null);
+  const [avatarUrl, setAvatarUrl] = useState<any>("");
   const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
@@ -118,7 +118,6 @@ export default function Avatar({
           <span>Change</span>
           <span className="sr-only"> user photo</span>
           <input
-            id="desktop-user-photo"
             name="user-photo"
             className="absolute inset-0 h-full w-full cursor-pointer rounded-md border-gray-300 opacity-0"
             type="file"
